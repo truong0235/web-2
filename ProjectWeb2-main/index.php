@@ -94,7 +94,7 @@ $blogs                  =   getBlogs($page, $search);
     <div class="section">
         <div class="container">
             <div class="section-header">
-                <h2>Những sản phẩm mới nhất</h2>
+                <h2>Những ấn phẩm mới</h2>
             </div>
             <div class="row" id="latest-products">
                 <?php
@@ -172,7 +172,7 @@ $blogs                  =   getBlogs($page, $search);
     <div class="section">
         <div class="container">
             <div class="section-header">
-                <h2>Những sản phẩm bán chạy nhất</h2>
+                <h2>Top ấn phẩm bán chạy</h2>
             </div>
             <div class="row" id="best-products">
                 <?php
