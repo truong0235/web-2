@@ -20,7 +20,7 @@
                 <div class="breadcumb">
                     <a href="index.php">Trang chủ</a>
                     <span><i class='bx bxs-chevrons-right'></i></span>
-                    <a href="./products.php">Tất cả sản phẩm</a>
+                    <a href="./products.php">Tất cả ấn phẩm</a>
                     <span><i class='bx bxs-chevrons-right'></i></span>
                     <a href="#"><?= $product['name']?></a>
                 </div>
@@ -56,7 +56,7 @@
                         </div>
                         <div class="product-info-detail">
                             <span class="product-info-detail-title">Còn:</span>
-                            <a><?= $product['qty'] ?></a><span class="product-info-detail-title"> Sản phẩm</span>
+                            <a><?= $product['qty'] ?></a><span class="product-info-detail-title"> Ấn phẩm</span>
                         </div>
                         <div class="product-info-detail">
                             <span class="product-info-detail-title">Đánh giá:</span>
@@ -65,7 +65,7 @@
                                 <i class='bx bxs-star'></i>
                             </span>
                         </div>
-                        <h3>Đặc điểm nổi bật</h3>
+                        <h3>Tóm tắt nhanh</h3>
                         <p class="product-description">
                             <?= nl2br($product['small_description']) ?>
                         </p>

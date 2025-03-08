@@ -14,7 +14,7 @@ $page ++;
                 <div class="breadcumb">
                     <a href="index.php">Trang chủ</a>
                     <span><i class='bx bxs-chevrons-right'></i></span>
-                    <a href="./products.php">Tất cả sản phẩm</a>
+                    <a href="./products.php">Tất cả ấn phẩm</a>
                 </div>
             </div>
             <div class="box">
