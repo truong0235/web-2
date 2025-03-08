@@ -42,7 +42,7 @@ include ("../admin/includes/header.php");
                                                 <a href="edit-product.php?id=<?= $item['id'];?>" class="btn btn-primary">Sửa</a>                                 
                                             </td>
                                             <td>
-                                                <form action="code.php" method="POST">
+                                                <form action="code.php" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
                                                     <input type="hidden" name="product_id" value="<?= $item['id']; ?>">
                                                     <button type="submit" name="delete_product_btn" class="btn btn-danger">Xóa  </button>
                                                 </form>   

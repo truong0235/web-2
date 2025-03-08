@@ -3,7 +3,7 @@
 include("./includes/header.php");
 
 $products   =   getLatestProducts(9, $page, $type, $search);
-$page ++;
+$page++;
 ?>
 
 <body>
@@ -34,7 +34,7 @@ $page ++;
                                 if (mysqli_num_rows($categories) > 0) {
                                     foreach ($categories as $item) {
                                 ?>
-                                        <li><a href="./products.php?type=<?= $item['slug']?>"><?= $item['name']; ?></a></li>
+                                        <li><a href="./products.php?type=<?= $item['slug'] ?>"><?= $item['name']; ?></a></li>
                                 <?php
                                     }
                                 } else {
@@ -58,51 +58,61 @@ $page ++;
                         </div>
                         <div class="box">
                             <div class="row" id="products">
-                            <?php foreach ($products as $product) { ?>
-                                <div class="col-4 col-md-6 col-sm-12">
-                                    <div class="product-card">
-                                        <div class="product-card-img">
-                                        <a href="./product-detail.php?slug=<?= $product['slug'] ?>">
-                                        <img src="./images/<?= $product['image'] ?>" alt="">
-                                        <img src="./images/<?= $product['image'] ?>" alt="">
-                                    </a>
-                                        </div>
-                                        <div class="product-card-info">
-                                            <div class="product-btn">
-                                                <a href="./product-detail.php?slug=<?= $product['slug'] ?>" class="btn-flat btn-hover btn-shop-now">Mua ngay</a>
-                                                <button class="btn-flat btn-hover btn-cart-add">
-                                                    <i class='bx bxs-cart-add'></i>
-                                                </button>
-                                                
+                                <?php foreach ($products as $product) { ?>
+                                    <div class="col-4 col-md-6 col-sm-12">
+                                        <div class="product-card">
+                                            <div class="product-card-img">
+                                                <a href="./product-detail.php?slug=<?= $product['slug'] ?>">
+                                                    <img src="./images/<?= $product['image'] ?>" alt="">
+                                                    <img src="./images/<?= $product['image'] ?>" alt="">
+                                                </a>
                                             </div>
-                                            <div class="product-card-name">
-                                                <?= $product['name'] ?>
-                                            </div>
-                                            <div class="product-card-price">
-                                                <span><del>$<?= $product['original_price'] ?></del></span>
-                                                <span class="curr-price">$<?= $product['selling_price'] ?></span>
+                                            <div class="product-card-info">
+                                                <div class="product-btn">
+                                                    <a href="./product-detail.php?slug=<?= $product['slug'] ?>" class="btn-flat btn-hover btn-shop-now">Mua ngay</a>
+                                                    <form method="post" action="./functions/muabangIconCart.php">
+                                                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                                        <input type="hidden" name="quantity" id="quantity" value="1">
+                                                        <input type="hidden" name="order" value="true">
+                                                        <button type=submit class="btn-flat btn-hover btn-cart-add">
+                                                            <i class='bx bxs-cart-add'></i>
+                                                        </button>
+                                                    </form>
+                                                    <?php
+                                                    if (isset($_SESSION['giohang'])) {
+                                                        $message = $_SESSION['giohang'];
+                                                        unset($_SESSION['giohang']); // Xóa message sau khi hiển thị để tránh lặp lại
+                                                    }
+                                                    ?>
+                                                </div>
+                                                <div class="product-card-name">
+                                                    <?= $product['name'] ?>
+                                                </div>
+                                                <div class="product-card-price">
+                                                    <span><del>$<?= $product['original_price'] ?></del></span>
+                                                    <span class="curr-price">$<?= $product['selling_price'] ?></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            <?php } ?>
+                                <?php } ?>
                             </div>
                         </div>
                         <div class="box">
                             <ul class="pagination">
-                                <?php 
+                                <?php
                                 // if ($page != 1) {
                                 //     $page--;
                                 //     echo "<li><a href='?page=$page'><i class='bx bxs-chevron-left'></i></a></li>";
                                 //     $page++;
                                 // }
-                                for($i = 1 ; $i <= ceil(totalValue('products')/9) ; $i++) { 
+                                for ($i = 1; $i <= ceil(totalValue('products') / 9); $i++) {
                                     if ($i == $page) {
                                         echo "<li><a class='active'>$i</a></li>";
-                                    }else{
+                                    } else {
                                         echo "<li><a href='?page=$i'>$i</a></li>";
                                     }
-                                } 
+                                }
                                 // if ($page != ceil(totalValue('products')/9)){
                                 //     $page ++;
                                 //     echo "<li><a href='?page=$page'><i class='bx bxs-chevron-right'></i></a></li>";
@@ -122,6 +132,13 @@ $page ++;
     <!-- app js -->
     <script src="./assets/js/app.js"></script>
     <script src="./assets/js/products.js"></script>
+    <script>
+        window.onload = function() {
+            <?php if (!empty($message)) { ?>
+                alert("<?php echo addslashes($message); ?>");
+            <?php } ?>
+        };
+    </script>
 </body>
 
 </html>
