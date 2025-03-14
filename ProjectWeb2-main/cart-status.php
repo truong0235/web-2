@@ -112,7 +112,7 @@ if (!isset($_SESSION['auth_user']['id'])){
                                         <?php 
                                             if($order['status'] == 4) { 
                                                 $id = $order['id'];
-                                                if($order['rate'] > 0){
+                                                if(isset($order['rate']) && $order['rate'] > 0){
                                                     echo "<a href='./vote.php?id=$id'> Đánh giá lại </a>";
                                                 }else{
                                                     echo "<a href='./vote.php?id=$id'> Đánh giá </a>";
@@ -121,7 +121,8 @@ if (!isset($_SESSION['auth_user']['id'])){
                                                 echo '<a> Chờ đánh giá </a>';
                                             }
                                         ?>
-                                    </td>         
+                                    </td>
+         
                                 </tr>
                             <?php } ?>
                             </tbody>

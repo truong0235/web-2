@@ -118,7 +118,7 @@ if (isset($_POST['order'])){
     $comment    = $_POST['comment'];
 
     $query =    "UPDATE `order_detail` SET `rate` = '$rate', `comment` = '$comment'
-                WHERE `id` = '$id' AND `user_id` = '$user_id' AND `status` = '4'";
+                WHERE `order_id` = '$id' AND `user_id` = '$user_id' AND `status` = '4'";
     mysqli_query($conn, $query);
 
     $_SESSION['message']="Đánh giá sản phẩm thành công";

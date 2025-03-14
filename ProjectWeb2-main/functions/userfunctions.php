@@ -47,26 +47,80 @@ function getBestSelling($numberGet){
                 LIMIT $numberGet";
     return mysqli_query($conn, $query);
 }
-function getLatestProducts($numberGet,$page = 0,$type = "",$search=""){
+function getLatestProducts($numberGet, $page = 0, $type = "", $search = "") {
     global $conn;
     $page_extra = $numberGet * $page;
 
-    if ($type != ""){
-        $categoryId     = getBySlug("categories", $type);
-        $categoryId     = mysqli_fetch_array($categoryId)['id'];
-        $query =    "SELECT * FROM `products` 
-                WHERE `name` LIKE '%$search%' AND `category_id` = '$categoryId'
-                ORDER BY `id` DESC 
-                LIMIT $numberGet OFFSET $page_extra";
-    }else{
-        $query =    "SELECT * FROM `products` 
-                WHERE `name` LIKE '%$search%'
-                ORDER BY `id` DESC 
-                LIMIT $numberGet OFFSET $page_extra";
+    // Escape input để tránh SQL Injection
+    $search = mysqli_real_escape_string($conn, $search);
+    $type = mysqli_real_escape_string($conn, $type);
+
+    // Mặc định WHERE là 1 để dễ dàng thêm điều kiện
+    $whereClause = "1";
+
+    // Lọc theo tên sản phẩm nếu có
+    if (!empty($search)) {
+        $whereClause .= " AND `name` LIKE '%$search%'";
     }
+
+    // Kiểm tra danh mục có tồn tại không
+    if (!empty($type)) {
+        $categoryResult = getBySlug("categories", $type);
+        $categoryRow = mysqli_fetch_array($categoryResult);
+        
+        if ($categoryRow) {
+            $categoryId = $categoryRow['id'];
+            $whereClause .= " AND `category_id` = '$categoryId'";
+        } else {
+            return []; // Nếu không có danh mục, trả về mảng rỗng
+        }
+    }
+
+    // Truy vấn lấy sản phẩm theo điều kiện
+    $query = "SELECT * FROM `products` 
+              WHERE $whereClause
+              ORDER BY `id` DESC 
+              LIMIT $numberGet OFFSET $page_extra";
+
+    $result = mysqli_query($conn, $query);
     
-    return mysqli_query($conn, $query);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC); // Chuyển kết quả thành mảng
 }
+
+//đếm số sản phẩm theo danh mục
+function getTotalProducts($type = "", $search = "") {
+    global $conn;
+
+    // Escape input để tránh SQL Injection
+    $search = mysqli_real_escape_string($conn, $search);
+    $type = mysqli_real_escape_string($conn, $type);
+
+    $whereClause = "1"; // Mặc định WHERE luôn đúng
+
+    if (!empty($search)) {
+        $whereClause .= " AND `name` LIKE '%$search%'";
+    }
+
+    if (!empty($type)) {
+        $categoryResult = getBySlug("categories", $type);
+        $categoryRow = mysqli_fetch_array($categoryResult);
+
+        if ($categoryRow) {
+            $categoryId = $categoryRow['id'];
+            $whereClause .= " AND `category_id` = '$categoryId'";
+        } else {
+            return 0; // Nếu danh mục không tồn tại, trả về 0 sản phẩm
+        }
+    }
+
+    // Truy vấn số lượng sản phẩm
+    $query = "SELECT COUNT(*) as total FROM `products` WHERE $whereClause";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    return (int)$row['total']; // Trả về tổng số sản phẩm
+}
+
 function getBlogs($page, $keyWold){
     global $conn;
     $page_extra = 10 * $page;
@@ -102,13 +156,30 @@ function getMyOrders(){
     return mysqli_query($conn, $query);
 }
 
-function getMyOrderVote($id){
+function getMyOrderVote($id) {
     global $conn;
     $user_id = $_SESSION['auth_user']['id'];   
-    $query =    "SELECT `order_detail`.*, `products`.`name`,`products`.`description`,`products`.`small_description`,`products`.`image`,`products`.`slug` FROM `order_detail` 
-                JOIN `products` on `order_detail`.`product_id` = `products`.`id`
-                WHERE `order_detail`.`id` = '$id' AND `order_detail`.`status` = 4 AND `order_detail`.`user_id` = $user_id";
-    return mysqli_query($conn, $query);
+    $id = intval($id); // Ép kiểu số nguyên để tránh SQL Injection
+    
+    $query = "SELECT `order_detail`.*, `products`.`name`, `products`.`description`, 
+                     `products`.`small_description`, `products`.`image`, `products`.`slug`, 
+                     `order_detail`.`rate`, `order_detail`.`comment`
+              FROM `order_detail` 
+              JOIN `products` ON `order_detail`.`product_id` = `products`.`id`
+              WHERE `order_detail`.`order_id` = '$id' 
+              AND `order_detail`.`status` = 4 
+              AND `order_detail`.`user_id` = '$user_id'";
+
+    $result = mysqli_query($conn, $query);
+
+    // Kiểm tra lỗi SQL
+    if (!$result) {
+        die("Lỗi truy vấn SQL: " . mysqli_error($conn));
+    }
+
+    $data = mysqli_fetch_assoc($result);
+
+    return $data ?: null; // Trả về null nếu không có dữ liệu
 }
 
 function getOrderWasBuy($cart_id){
