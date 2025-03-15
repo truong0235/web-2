@@ -182,7 +182,12 @@ else if (isset($_POST['user_idd'])) {
     $password = $_POST['password'];
     $cpassword = $_POST['cpassword'];
 
-    if (empty($password)) {
+    $query = "SELECT password FROM users WHERE id = '$id'";
+    $query_run = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($query_run);
+    $current_password = $row['password'];
+
+    if (empty($password) || $password == $current_password) {
         $update_query = "UPDATE `users` SET `name`='$name', `email`='$email', `phone`='$phone', `address`='$address' WHERE `id`='$id' ";
         $update_query_run = mysqli_query($conn, $update_query);
         if ($update_query_run) {
@@ -190,7 +195,8 @@ else if (isset($_POST['user_idd'])) {
         } else {
             redirect("../admin/user.php", "Xảy ra lỗi, vui lòng cập nhật lại");
         }
-    } else {
+    }
+     else {
         if ($password == $cpassword) {
             $p_hash = password_hash($password, PASSWORD_DEFAULT);
             $update_query = "UPDATE `users` SET `name`='$name', `email`='$email', `phone`='$phone', `address`='$address', `password`='$p_hash' WHERE `id`='$id' ";
@@ -201,7 +207,7 @@ else if (isset($_POST['user_idd'])) {
                 redirect("../admin/user.php", "Xảy ra lỗi, vui lòng cập nhật lại");
             }
         } else {
-            redirect("../admin/user.php", "Mật khẩu không khớp, vui lòng nhập lại");
+            redirect("../admin/edit_user.php", "Mật khẩu không khớp, vui lòng nhập lại");
         }
     }
 }
