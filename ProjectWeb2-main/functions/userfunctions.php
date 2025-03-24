@@ -42,6 +42,7 @@ function getBestSelling($numberGet){
     global $conn;
     $query =    "SELECT `products`.*, COUNT(`order_detail`.id) as total_buy FROM `products` 
                 LEFT JOIN `order_detail` ON `products`.`id` = `order_detail`.`product_id`
+                WHERE `products`.`status` = 0
                 GROUP BY `products`.`id`
                 ORDER BY `total_buy` DESC
                 LIMIT $numberGet";
@@ -56,11 +57,13 @@ function getLatestProducts($numberGet,$page = 0,$type = "",$search=""){
         $categoryId     = mysqli_fetch_array($categoryId)['id'];
         $query =    "SELECT * FROM `products` 
                 WHERE `name` LIKE '%$search%' AND `category_id` = '$categoryId'
+                AND `products`.`status` = 0
                 ORDER BY `id` DESC 
                 LIMIT $numberGet OFFSET $page_extra";
     }else{
         $query =    "SELECT * FROM `products` 
                 WHERE `name` LIKE '%$search%'
+                AND `products`.`status` = 0
                 ORDER BY `id` DESC 
                 LIMIT $numberGet OFFSET $page_extra";
     }
