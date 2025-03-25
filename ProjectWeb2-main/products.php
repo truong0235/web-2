@@ -33,16 +33,15 @@ $page++;
 
                                 if (mysqli_num_rows($categories) > 0) {
                                     foreach ($categories as $item) {
-                                ?>
-                                        <li><a href="./products.php?type=<?= $item['slug'] ?>"><?= $item['name']; ?></a></li>
-                                <?php
+                                        $active = (isset($_GET['type']) && $_GET['type'] == $item['slug']) ? 'style="font-weight:bold;color:red;"' : '';
+                                        echo '<li><a href="./products.php?' . http_build_query(['type' => $item['slug']]) . '" ' . $active . '>' . htmlspecialchars($item['name']) . '</a></li>';
                                     }
                                 } else {
-                                    echo "no";
+                                    echo "<li>Không có danh mục nào</li>";
                                 }
                                 ?>
-
                             </ul>
+
                         </div>
                         <!-- <div class="box">
                             <ul class="filter-list">
@@ -99,27 +98,24 @@ $page++;
                             </div>
                         </div>
                         <div class="box">
-                            <ul class="pagination">
-                                <?php
-                                // if ($page != 1) {
-                                //     $page--;
-                                //     echo "<li><a href='?page=$page'><i class='bx bxs-chevron-left'></i></a></li>";
-                                //     $page++;
-                                // }
-                                for ($i = 1; $i <= ceil(totalValue('products') / 9); $i++) {
-                                    if ($i == $page) {
-                                        echo "<li><a class='active'>$i</a></li>";
-                                    } else {
-                                        echo "<li><a href='?page=$i'>$i</a></li>";
-                                    }
+                            <?php
+                            $totalProducts = getTotalProducts($type, $search);
+                            $totalPages = ceil($totalProducts / 9); // Mỗi trang 9 sản phẩm
+
+                            if ($totalPages > 1) {
+                                echo "<ul class='pagination'>";
+                                
+                                for ($i = 1; $i <= $totalPages; $i++) {
+                                    $active = ($i == $page) ? "class='active'" : "";
+                                    echo "<li><a href='?page=$i&type=$type' $active>$i</a></li>";
                                 }
-                                // if ($page != ceil(totalValue('products')/9)){
-                                //     $page ++;
-                                //     echo "<li><a href='?page=$page'><i class='bx bxs-chevron-right'></i></a></li>";
-                                // }
-                                ?>
-                            </ul>
+
+                                echo "</ul>";
+                            }
+                            ?>
                         </div>
+
+
                     </div>
                 </div>
             </div>
