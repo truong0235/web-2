@@ -67,7 +67,8 @@ include ("../admin/includes/header.php");
                                 <div class="col-md-12">
                                 <br>
                                     <label class="mb-0"><b>Hình ảnh</b></label>
-                                    <input type="file" name="image" class="form-control mb-2">
+                                    <input type="file" name="image" class="form-control mb-2" id="imageInput">
+                                    <img id="imagePreview" style="max-width: 30%; margin-top: 10px; display: none;">
                                 </div>
                                 <div class="col-md-6">
                                 <br>
@@ -95,4 +96,18 @@ include ("../admin/includes/header.php");
 </div>
 </body>
 <script type="text/javascript" src="./assets/js/StringConvertToSlug.js"></script>
+<script>
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
+
+    imageInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            imagePreview.src = URL.createObjectURL(file);
+            imagePreview.style.display = 'block';
+        } else {
+            imagePreview.style.display = 'none';
+        }
+    });
+</script>
 <?php include ("../admin/includes/footer.php"); ?>
