@@ -30,20 +30,38 @@ function getAllUsers(){
 }
 
 // order
-function getAllOrder($type = -1){
+function getAllOrder($status = -1, $from_date = null, $to_date = null, $district = null, $city = null){
     global $conn;
-    $getStatus = "1,2,3,4";
-    if ($type != -1){
-        $getStatus = $type . "";
+    $query = "SELECT `orders`.*, COUNT(`order_detail`.`id`) AS `quantity`,
+                     `users`.`name`, `users`.`email`, `users`.`phone`, `users`.`address` 
+              FROM `orders`
+              JOIN `users` ON `orders`.`user_id` = `users`.`id`
+              LEFT JOIN `order_detail` ON `order_detail`.`order_id` = `orders`.`id`
+              WHERE 1"; // Mặc định luôn đúng, giúp dễ dàng thêm điều kiện lọc
+
+    // Lọc theo trạng thái đơn hàng
+    if ($status != -1) {
+        $query .= " AND `orders`.`status` = '$status'";
     }
-    $query =    "SELECT `orders`.*,COUNT(`order_detail`.`id`) as`quantity`,
-                `users`.`name`,`users`.`email`,`users`.`phone`,`users`.`address` FROM`orders`
-                JOIN `users` ON `orders`.`user_id` = `users`.`id`
-                LEFT JOIN `order_detail` ON `order_detail`.`order_id` = `orders`.`id`
-                WHERE`orders`.`status` IN($getStatus)
-                GROUP BY `orders`.`id`
-                ORDER BY `orders`.`id` DESC";
-    return $query_run= mysqli_query($conn, $query);
+
+    // Lọc theo khoảng thời gian đặt hàng
+    if (!empty($from_date) && !empty($to_date)) {
+        $query .= " AND DATE(`orders`.`created_at`) BETWEEN '$from_date' AND '$to_date'";
+    }
+
+    // Lọc theo địa điểm giao hàng (quận/huyện)
+    if (!empty($district)) {
+        $query .= " AND `users`.`address` LIKE '%$district%'";
+    }
+
+    // Lọc theo địa điểm giao hàng (thành phố)
+    if (!empty($city)) {
+        $query .= " AND `users`.`address` LIKE '%$city%'";
+    }
+
+    $query .= " GROUP BY `orders`.`id` ORDER BY `orders`.`id` DESC";
+
+    return mysqli_query($conn, $query);
 }
 
 function getOrderDetail($order_id){
