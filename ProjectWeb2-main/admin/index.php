@@ -178,8 +178,8 @@ $users = thongkeKH($from_date, $to_date);
                                                 <span class="text-secondary text-xs font-weight-bold">
                                                     <form method="GET" action="DonHang.php">
                                                         <input type="hidden" name="id" value=<?= $user['id'] ?> />
-                                                        <input type="hidden" name="start_date" value=<?= $from_date ?> />
-                                                        <input type="hidden" name="end_date" value=<?= $to_date ?> />
+                                                        <input type="hidden" name="start_date" value="<?= htmlspecialchars($from_date) ?>" />
+                                                        <input type="hidden" name="end_date" value="<?= htmlspecialchars($to_date) ?>" />
                                                         <input type="submit" name="xem" value="Xem Chi Tiết" />
                                                     </form>
                                                 </span>

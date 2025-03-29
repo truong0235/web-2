@@ -3,13 +3,12 @@ include("../admin/includes/header.php");
 
 $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : -1;
 $startDate = isset($_REQUEST['start_date']) ? $_REQUEST['start_date'] : "";
-$endDate = isset($_REQUEST['end_date']) ? $_REQUEST['end_date'] : "";
+$endDate = isset($_REQUEST['end_date']) ? $_REQUEST['end_date'] : "";//var_dump($startDate); var_dump($endDate); exit;
 $district = isset($_REQUEST['district']) ? $_REQUEST['district'] : "";
 $city = isset($_REQUEST['city']) ? $_REQUEST['city'] : "";
 
 $userid = isset($_REQUEST['id']) ? $_REQUEST['id'] : null; //var_dump($userid); exit;
-$startDate = isset($_REQUEST['start_date']) ? $_REQUEST['start_date'] : null;
-$endDate = isset($_REQUEST['end_date']) ? $_REQUEST['end_date'] : null;//var_dump($startDate); var_dump($endDate); exit;
+
 $orders = donhangKH($startDate, $endDate, $district, $city, $userid);
 
 ?>
