@@ -96,7 +96,7 @@ if (isset($_POST['order'])){
             mysqli_query($conn, $query);
         }
 
-        $id=$_SESSION['auth_user']['id'];
+        /*$id=$_SESSION['auth_user']['id'];
         $name= $_POST['name'];
         $phone= $_POST['phone'];
         $address= $_POST['address'];
@@ -104,8 +104,8 @@ if (isset($_POST['order'])){
         $update_query_run=mysqli_query($conn,$update_query);
         if($update_query_run)
         {
-            $_SESSION['message']="Mua sản phẩm thành công";
-        }else $_SESSION['message']="Không thành công";
+        }else $_SESSION['message']="Không thành công";*/
+        $_SESSION['message']="Mua sản phẩm thành công";
         echo 1;
     }
 
