@@ -114,20 +114,28 @@ $blogs                  =   getBlogs($page, $search);
                                     <a href="./product-detail.php?slug=<?= $product['slug'] ?>">
                                         <button class="btn-flat btn-hover btn-shop-now">Mua ngay</button>
                                     </a>
-                                    <form method="post" action="./functions/muabangIconCart.php">
-                                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                                        <input type="hidden" name="quantity" id="quantity" value="1">
-                                        <input type="hidden" name="order" value="true">
-                                        <button type=submit class="btn-flat btn-hover btn-cart-add">
-                                            <i class='bx bxs-cart-add'></i>
-                                        </button>
-                                    </form>
-                                    <?php
-                                    if (isset($_SESSION['giohang'])) {
-                                        $message = $_SESSION['giohang'];
-                                        unset($_SESSION['giohang']); // Xóa message sau khi hiển thị để tránh lặp lại
-                                    }
-                                    ?>
+                                    <?php if (!isset($_SESSION['auth_user']['id'])) { ?>
+                                        <a href="./login.php">
+                                            <button class="btn-flat btn-hover btn-cart-add">
+                                                <i class='bx bxs-cart-add'></i>
+                                            </button>
+                                        </a>
+                                    <?php } else { ?>
+                                        <form method="post" action="./functions/muabangIconCart.php">
+                                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                            <input type="hidden" name="quantity" id="quantity" value="1">
+                                            <input type="hidden" name="order" value="true">
+                                            <button type=submit class="btn-flat btn-hover btn-cart-add">
+                                                <i class='bx bxs-cart-add'></i>
+                                            </button>
+                                        <?php } ?>
+                                        </form>
+                                        <?php
+                                        if (isset($_SESSION['giohang'])) {
+                                            $message = $_SESSION['giohang'];
+                                            unset($_SESSION['giohang']); // Xóa message sau khi hiển thị để tránh lặp lại
+                                        }
+                                        ?>
                                 </div>
                                 <div class="product-card-name">
                                     <?= $product['name'] ?>
@@ -203,23 +211,28 @@ $blogs                  =   getBlogs($page, $search);
                                     <a href="./product-detail.php?slug=<?= $product['slug'] ?>">
                                         <button class="btn-flat btn-hover btn-shop-now">Mua ngay</button>
                                     </a>
-                                    <form method="post" action="./functions/muabangIconCart.php">
-                                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                                        <input type="hidden" name="quantity" id="quantity" value="1">
-                                        <input type="hidden" name="order" value="true">
-                                        <button type=submit class="btn-flat btn-hover btn-cart-add">
-                                            <i class='bx bxs-cart-add'></i>
-                                        </button>
-                                    </form>
+                                    <?php if (!isset($_SESSION['auth_user']['id'])) { ?>
+                                        <a href="./login.php">
+                                            <button class="btn-flat btn-hover btn-cart-add">
+                                                <i class='bx bxs-cart-add'></i>
+                                            </button>
+                                        </a>
+                                    <?php } else { ?>
+                                        <form method="post" action="./functions/muabangIconCart.php">
+                                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                            <input type="hidden" name="quantity" id="quantity" value="1">
+                                            <input type="hidden" name="order" value="true">
+                                            <button type=submit class="btn-flat btn-hover btn-cart-add">
+                                                <i class='bx bxs-cart-add'></i>
+                                            </button>
+                                        </form>
+                                    <?php } ?>
                                     <?php
                                     if (isset($_SESSION['giohang'])) {
                                         $message = $_SESSION['giohang'];
                                         unset($_SESSION['giohang']); // Xóa message sau khi hiển thị để tránh lặp lại
                                     }
                                     ?>
-                                    <button class="btn-flat btn-hover btn-cart-add">
-                                        <i class='bx bxs-heart'></i>
-                                    </button>
                                 </div>
                                 <div class="product-card-name">
                                     <?= $product['name'] ?>

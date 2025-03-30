@@ -157,3 +157,12 @@ function donhangKH($from_date = null, $to_date = null, $district = null, $city =
 
     return mysqli_query($conn, $query);
 }
+
+function getOrder_Detail($user_id){ //lấy đơn hàng đã mà chưa thanh toán (giỏ hàng) theo user_id
+    global $conn;
+    $query =    "SELECT * 
+                FROM `order_detail` 
+                WHERE `user_id` = '$user_id'
+                AND `order_id` IS NULL";
+    return mysqli_query($conn, $query);
+}
