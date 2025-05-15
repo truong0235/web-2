@@ -10,7 +10,7 @@ $trangthai = isset($_GET['trangthai']) ? $_GET['trangthai'] : "";
 $sapxep = isset($_GET['sapxep']) ? $_GET['sapxep'] : 1;
 $theocot = isset($_GET['theocot']) ? $_GET['theocot'] : "id";
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit = 1;
+$limit = 10;
 $offset = ($page - 1) * $limit;
 ?>
 
