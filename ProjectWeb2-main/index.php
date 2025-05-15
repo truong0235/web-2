@@ -141,8 +141,13 @@ $blogs                  =   getBlogs($page, $search);
                                     <?= $product['name'] ?>
                                 </div>
                                 <div class="product-card-price">
-                                    <span><del>$<?= $product['original_price'] ?></del></span>
-                                    <span class="curr-price">$<?= $product['selling_price'] ?></span>
+                                    <?php
+                                    if ($product['original_price'] != $product['selling_price']) { ?>
+                                        <span><del>$<?= $product['original_price'] ?></del></span>
+                                        <span class="curr-price">$<?= $product['selling_price'] ?></span>
+                                    <?php } else { ?>
+                                        <span class="curr-price">$<?= $product['selling_price'] ?></span>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>

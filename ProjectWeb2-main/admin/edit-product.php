@@ -22,7 +22,7 @@ include("../admin/includes/header.php");
                                 </h4>
                             </div>
                             <div class="card-body">
-                                <form action="code.php" method="POST" enctype="multipart/form-data"><!-- Uploads image -->
+                                <form id= "productForm"action="code.php" method="POST" enctype="multipart/form-data"><!-- Uploads image -->
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label class="mb-0"><b>Select Category</b></label>
@@ -73,7 +73,7 @@ include("../admin/includes/header.php");
                                         <div class="col-md-6">
                                             <br>
                                             <label class="mb-0"><b>Selling Price</b></label>
-                                            <input type="text" required name="selling_price" value="<?= $data['selling_price']; ?>" placeholder="Enter Selling Price" class="form-control mb-2">
+                                            <input type="text" name="selling_price" value="<?= $data['selling_price']; ?>" placeholder="Enter Selling Price" class="form-control mb-2">
                                         </div>
                                         <div class="col-md-12">
                                             <br>
@@ -131,6 +131,28 @@ include("../admin/includes/header.php");
             imagePreview.style.display = 'block';
         } else {
             imagePreview.style.display = 'none';
+        }
+    });
+</script>
+<script>
+    document.getElementById('productForm').addEventListener('submit', function(e) {
+        const originalPrice = parseFloat(document.querySelector('input[name="original_price"]').value);
+        const sellingPrice = parseFloat(document.querySelector('input[name="selling_price"]').value || "0"); 
+        // Kiểm tra xem giá trị có phải số hay không 
+        if (isNaN(originalPrice) || originalPrice <= 0) {
+            alert("Giá ban đầu phải là một số lớn hơn 0.");
+            e.preventDefault(); // Ngăn không gửi form 
+            return;
+        }
+        if (isNaN(sellingPrice) || sellingPrice < 0) {
+            alert("Giá giảm phải là số không âm.");
+            e.preventDefault();
+            return;
+        }
+        if (sellingPrice > originalPrice) {
+            alert("Giá giảm không được lớn hơn giá ban đầu.");
+            e.preventDefault();
+            return;
         }
     });
 </script>

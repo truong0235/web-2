@@ -22,7 +22,7 @@ $orders = getAllOrder($type, $startDate, $endDate, $district, $city);
                     </div>
                     <div class="card-body px-0 pb-2">
                         <div class="table-responsive p-0">
-                            
+
                             <!-- Form lọc đơn hàng -->
                             <form method="GET" action="./order.php" style="margin: 20px;">
                                 <div class="row">
@@ -70,32 +70,37 @@ $orders = getAllOrder($type, $startDate, $endDate, $district, $city);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach ($orders as $order) { ?>
-                                    <tr>
-                                        <td>#<?= $order['id'] ?></td>
-                                        <td>
-                                            <h6 class="mb-0"><?= $order['name'] ?></h6>
-                                            <p class="text-secondary mb-0"><?= $order['email'] ?></p>
-                                        </td>
-                                        <td>
-                                            <a href="./order-detail.php?id_order=<?= $order['id'] ?>">View now</a>
-                                            <p class="text-secondary mb-0">Quantity: <?= $order['quantity'] ?></p>
-                                        </td>
-                                        <td>
-                                            <p><?= $order['address'] ?></p>
-                                            <p class="text-secondary mb-0"><?= $order['phone'] ?></p>
-                                        </td>
-                                        <td class="text-center">
-                                            <?php  
+                                    <?php foreach ($orders as $order) { ?>
+                                        <tr>
+                                            <td>#<?= $order['id'] ?></td>
+                                            <td>
+                                                <h6 class="mb-0"><?= $order['name'] ?></h6>
+                                                <p class="text-secondary mb-0"><?= $order['email'] ?></p>
+                                            </td>
+                                            <td>
+                                                <a href="./order-detail.php?id_order=<?= $order['id'] ?>" class="btn btn-primary btn-sm mb-1">
+                                                    <i class="fas fa-eye"></i> View now
+                                                </a>
+                                                <p class="mb-0 fw-bold text-dark">
+                                                    <i class="fas fa-box-open"></i> Quantity: <?= $order['quantity'] ?>
+                                                </p>
+                                            </td>
+
+                                            <td>
+                                                <p><?= $order['address'] ?></p>
+                                                <p class="text-secondary mb-0"><?= $order['phone'] ?></p>
+                                            </td>
+                                            <td class="text-center">
+                                                <?php
                                                 if ($order['status'] == 1) echo '<span class="badge bg-warning">Chờ xác nhận</span>';
                                                 elseif ($order['status'] == 2) echo '<span class="badge bg-primary">Đã đặt</span>';
                                                 elseif ($order['status'] == 3) echo '<span class="badge bg-info">Đang giao</span>';
                                                 elseif ($order['status'] == 4) echo '<span class="badge bg-success">Hoàn tất</span>';
-                                            ?>
-                                        </td>
-                                        <td class="text-center"><?= date('d-m-Y', strtotime($order['created_at'])); ?></td>
-                                    </tr>
-                                <?php } ?> 
+                                                ?>
+                                            </td>
+                                            <td class="text-center"><?= date('d-m-Y', strtotime($order['created_at'])); ?></td>
+                                        </tr>
+                                    <?php } ?>
                                 </tbody>
                             </table>
 
