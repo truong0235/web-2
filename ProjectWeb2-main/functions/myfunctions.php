@@ -158,11 +158,90 @@ function donhangKH($from_date = null, $to_date = null, $district = null, $city =
     return mysqli_query($conn, $query);
 }
 
-function getOrder_Detail($user_id){ //lấy đơn hàng đã mà chưa thanh toán (giỏ hàng) theo user_id
+function getOrder_Detail($user_id)
+{ //lấy đơn hàng đã mà chưa thanh toán (giỏ hàng) theo user_id
     global $conn;
     $query =    "SELECT * 
                 FROM `order_detail` 
                 WHERE `user_id` = '$user_id'
                 AND `order_id` IS NULL";
+    return mysqli_query($conn, $query);
+}
+
+function getTotalProducts($tenSP, $LSP, $SLmin, $SLmax, $Pmin, $Pmax, $status)
+{
+    global $conn;
+    $query = "SELECT COUNT(*) as total FROM `products` pro WHERE 1";
+    if ($tenSP != "") {
+        $query .= " AND pro.name LIKE '%" . mysqli_real_escape_string($conn, $tenSP) . "%' ";
+    }
+    if ($LSP != "") {
+        if ($LSP != -1) {
+            $query .= " AND pro.category_id = '$LSP' ";
+        }
+    }
+    if ($SLmin != "" && $SLmax != "") {
+        if ($SLmin != 0 && $SLmax != 0) {
+            $query .= " AND pro.qty BETWEEN '$SLmin' AND '$SLmax' ";
+        } else if ($SLmin == 0 && $SLmax != 0) {
+            $query .= " AND pro.qty BETWEEN '$SLmin' AND '$SLmax' ";
+        }
+    }
+    if ($Pmin != "" && $Pmax != "") {
+        if ($Pmin != 0 && $Pmax != 0) {
+            $query .= " AND pro.selling_price BETWEEN '$Pmin' AND '$Pmax' ";
+        } else if ($Pmin == 0 && $Pmax != 0) {
+            $query .= " AND pro.selling_price BETWEEN '$Pmin' AND '$Pmax' ";
+        }
+    }
+    if ($status != "") {
+        if ($status != -1) {
+            $query .= " AND pro.status = '$status' ";
+        }
+    }
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    return $row['total'];
+}
+
+function getSanPham($tenSP, $LSP, $SLmin, $SLmax, $Pmin, $Pmax, $status, $sort, $by, $limit = 10, $offset = 0)
+{
+    global $conn;
+    $query = "SELECT *
+              FROM `products` pro
+              WHERE 1";
+    if ($tenSP != "") {
+        $query .= " AND pro.name LIKE '%" . mysqli_real_escape_string($conn, $tenSP) . "%' ";
+    }
+    if ($LSP != "") {
+        if ($LSP != -1) {
+            $query .= " AND pro.category_id = '$LSP' ";
+        }
+    }
+    if ($SLmin != "" && $SLmax != "") {
+        if ($SLmin != 0 && $SLmax != 0) {
+            $query .= " AND pro.qty BETWEEN '$SLmin' AND '$SLmax' ";
+        } else if ($SLmin == 0 && $SLmax != 0) {
+            $query .= " AND pro.qty BETWEEN '$SLmin' AND '$SLmax' ";
+        }
+    }
+    if ($Pmin != "" && $Pmax != "") {
+        if ($Pmin != 0 && $Pmax != 0) {
+            $query .= " AND pro.selling_price BETWEEN '$Pmin' AND '$Pmax' ";
+        } else if ($Pmin == 0 && $Pmax != 0) {
+            $query .= " AND pro.selling_price BETWEEN '$Pmin' AND '$Pmax' ";
+        }
+    }
+    if ($status != "") {
+        if ($status != -1) {
+            $query .= " AND pro.status = '$status' ";
+        }
+    }
+    if ($sort == 1) {
+        $query .= " ORDER BY $by ASC ";
+    } else {
+        $query .= " ORDER BY $by DESC ";
+    }
+    $query .= " LIMIT $limit OFFSET $offset";
     return mysqli_query($conn, $query);
 }
