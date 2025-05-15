@@ -41,8 +41,6 @@ $total=0;
                                             echo "<a href='./code.php?order=3&id=$id_order'><span class='badge badge-sm bg-gradient-info'>Delivery</span></a>";
                                         }else if ($order["status"] == 3){
                                             echo "<a href='./code.php?order=4&id=$id_order'><span class='badge badge-sm bg-gradient-success'>Delivered</span></a>";
-                                        }else if ($order["status"] == 4){
-                                            echo "<span class='badge badge-sm bg-gradient-primary'>Success</span>";
                                         }
                                     ?>
                                 <?php break; } ?>

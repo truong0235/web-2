@@ -86,9 +86,9 @@ if (isset($_POST['add_category_btn'])) {
     $small_description = $_POST['small_description'];
     $description = $_POST['description'];
     $original_price = $_POST['original_price'];
-    $selling_price = $_POST['selling_price'];
+    $selling_price = $_POST['selling_price'] == '' || $_POST['selling_price'] == 0? $_POST['original_price'] : $_POST['selling_price'];
     $status = isset($_POST['status']) ? '1' : '0';
-    $qty = $_POST['qty'];
+    $qty = 100;
     $image = $_FILES['image']['name'];
 
     $path = "../images";
@@ -119,7 +119,7 @@ if (isset($_POST['add_category_btn'])) {
     $small_description = $_POST['small_description'];
     $description = $_POST['description'];
     $original_price = $_POST['original_price'];
-    $selling_price = $_POST['selling_price'];
+    $selling_price = $_POST['selling_price'] == '' || $_POST['selling_price'] == 0? $_POST['original_price'] : $_POST['selling_price'];
     $status = isset($_POST['status']) ? '1' : '0';
     $qty = $_POST['qty'];
 
@@ -136,7 +136,7 @@ if (isset($_POST['add_category_btn'])) {
         $update_filename = $old_image;
     }
 
-    $update_product_query = "UPDATE products SET name='$name', slug='$slug', small_description='$small_description', description='$description',
+    $update_product_query = "UPDATE products SET name='$name', category_id='$category_id', slug='$slug', small_description='$small_description', description='$description',
     original_price='$original_price', selling_price='$selling_price', status='$status', qty='$qty', image='$update_filename' WHERE id='$product_id' ";
     $update_product_query_run = mysqli_query($conn, $update_product_query);
 
