@@ -75,7 +75,7 @@ $page = $page - 1;
                         </button>
                         
                     </form>
-                    
+                    <a href="advanced-search.php" class="btn btn-primary" style="margin-left: 10px;">Tìm kiếm nâng cao</a>
                     <ul class="user-menu">
                         <li><a href="#"><i class='bx bx-bell'></i></a></li>
                             <?php
